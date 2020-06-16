@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public final static String loginFileName = "login";
     public final static String passwordFileName = "password";
 
-    SharedPreferences sharedPref;
+    private SharedPreferences sharedPref;
     private static String FLAG = "flag";
     CheckBox checkBox;
 
@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         Button mLogin = findViewById(R.id.btn_login);
         Button mRegistration = findViewById(R.id.btn_registration);
         checkBox = findViewById(R.id.checkBox);
+
+        sharedPref = getSharedPreferences("My", MODE_PRIVATE);
 
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
