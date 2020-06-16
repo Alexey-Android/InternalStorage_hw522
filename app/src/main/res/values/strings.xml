@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">InternalStorage_hw522</string>
+    <string name="_login">Login</string>
+    <string name="_password">Password</string>
+    <string name="login">Login</string>
+    <string name="_registration">Registration</string>
+    <string name="_ex">Хранить логин и пароль во внешнем хранилище</string>
 </resources>
