@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
     public final static String loginFileName = "login.txt";
@@ -155,9 +156,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (checkBox.isChecked()) {
             if (isExternalStorageWritable()) {
+
                 FileReader fileReader = null;
+                File file = new File(getApplicationContext().getExternalFilesDir(null), fileName);
                 try {
-                    fileReader = new FileReader(fileName);
+                    fileReader = new FileReader(file);
                     fileReader.read();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -165,15 +168,11 @@ public class MainActivity extends AppCompatActivity {
                 } finally {
                     try {
                         fileReader.close();
-
                     } catch (IOException e) {
                         e.printStackTrace();
-                        return null;
                     }
                 }
-                return fileReader.toString();
             }
-
         } else {
             // Получим входные байты из файла которых нужно прочесть.
             // Декодируем байты в символы
@@ -193,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return sb.toString();
         }
+
     }
 
 
