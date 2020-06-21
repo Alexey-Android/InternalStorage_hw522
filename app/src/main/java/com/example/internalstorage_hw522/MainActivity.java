@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private static String FLAG = "flag";
     CheckBox checkBox;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         checkBox = findViewById(R.id.checkBox);
 
         sharedPref = getSharedPreferences("My", MODE_PRIVATE);
-
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 FileWriter fileWriter = null;
                 File file = new File(getApplicationContext().getExternalFilesDir(null), fileName);
                 try {
-                    fileWriter = new FileWriter(file, true);
+                    fileWriter = new FileWriter(file);
                     fileWriter.append(str);
                     return true;
                 } catch (IOException e) {
@@ -125,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         fileWriter.close();
                         return true;
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         return false;
@@ -151,33 +150,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private String readFromFile(String fileName) {
-
+        StringBuilder sb = new StringBuilder();
         if (checkBox.isChecked()) {
             if (isExternalStorageWritable()) {
-
-                FileReader fileReader = null;
                 File file = new File(getApplicationContext().getExternalFilesDir(null), fileName);
-                try {
-                    fileReader = new FileReader(file);
-                    fileReader.read();
+                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                    String s;
+                    while ((s = reader.readLine()) != null) {
+                        sb.append(s);
+                    }
+                    return sb.toString();
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
-                } finally {
-                    try {
-                        fileReader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         } else {
             // Получим входные байты из файла которых нужно прочесть.
             // Декодируем байты в символы
             // Читаем данные из потока ввода, буферизуя символы так, чтобы обеспечить эффективную запись отдельных символов.
-            StringBuilder sb = new StringBuilder();
+            //StringBuilder sb = new StringBuilder();
             try (FileInputStream fis = openFileInput(fileName);
                  InputStreamReader isr = new InputStreamReader(fis);
                  BufferedReader br = new BufferedReader(isr);
@@ -190,11 +183,9 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return null;
             }
-            return sb.toString();
         }
-
+        return sb.toString();
     }
-
 
     private void getFromSharedPref() {
         boolean chBx = sharedPref.getBoolean(FLAG, false);
